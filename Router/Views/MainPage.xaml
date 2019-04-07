@@ -5,8 +5,13 @@
     xmlns:local="using:Router"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Windows10FallCreatorsUpdate="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     mc:Ignorable="d"
     Background="White">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="DeviceListSource"/>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,19 +29,28 @@
         </Grid.RowDefinitions>
         <!--布局设置-->
 
-        <TextBlock Text="Router V0.1" FontSize="50" Grid.ColumnSpan="2" Foreground="Black"/>
-        <Button x:Name="btnSet" Content="系统设置" Foreground="Black" Background="White" Grid.Column="2" HorizontalAlignment="Center"/>
-        <Button x:Name="btnAbout" Content="了解更多" Foreground="Black" Background="White" Grid.Column="3" HorizontalAlignment="Center"></Button>
-        <GridView x:Name="gridView" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="3" RightTapped="GridView_RightTapped" SelectionChanged="GridView_SelectionChanged">
+        <TextBlock Text="Router V0.1" FontSize="50" Grid.ColumnSpan="2" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+            <TextBlock x:Name="txtLocIp" Text="本机地址:" FontSize="20" Grid.Row="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="请求端口:9000" FontSize="20" Grid.Row="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="请求地址:255.255.255.255" FontSize="20" Grid.Row="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </StackPanel>
+        <Button x:Name="btnSet" Foreground="Black" Background="White" Grid.Column="2" HorizontalAlignment="Center" Click="BtnSet_Click">
+            <SymbolIcon Symbol="57621"/>
+        </Button>
+        <Button x:Name="btnAbout" Content="了解更多" Foreground="Black" Background="White" Grid.Column="3" HorizontalAlignment="Center" Click="BtnAbout_Click"></Button>
+        <Button x:Name="btnSendData" Content="模拟数据发送" Foreground="Black" Background="White" Grid.Column="4" HorizontalAlignment="Center" Click="BtnSendData_Click"></Button>
+        <GridView x:Name="gridView" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Grid.RowSpan="3" RightTapped="GridView_RightTapped" SelectionChanged="GridView_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock x:Name="txtTitle" Text="{Binding Type}" FontSize="40" Foreground="Black"/>
-                        <TextBlock x:Name="txtStatue" Text="{Binding Statue}" Foreground="Black"/>
+                    <StackPanel Height="160" Width="160">
+                        <TextBlock x:Name="txtTitle" Text="{Binding Type}" FontSize="40"  Foreground="Black"/>
+                        <TextBlock x:Name="txtIPAddress" Text="{Binding IPAddress}" Foreground="Black"/>
+                        <TextBlock x:Name="txtNetPort" Text="{Binding NetPort}" Foreground="Black"/>
+                        <Image x:Name="ImageIco" Source="{Binding ImageUrl}" Width="70" Height="70" Stretch="Uniform"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
                     <Setter Property="BorderBrush" Value="Black"/>
@@ -44,5 +58,58 @@
                 </Style>
             </GridView.ItemContainerStyle>
         </GridView>
+
+        <SplitView x:Name="SplitPage" IsPaneOpen="False" Grid.RowSpan="4" Grid.ColumnSpan="2" Background="Transparent">
+            <SplitView.Pane>
+                <StackPanel Margin="0,0,64,0" HorizontalAlignment="Stretch">
+                    <SymbolIcon Symbol="57621" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <SymbolIcon Symbol="57640"/>
+                        <TextBlock Text="    Azure设置"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="帐号:" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <TextBox x:Name="txtAzure" Text="" Margin="0,0,-223,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                        <TextBlock Text="密码:" VerticalAlignment="Center"/>
+                        <PasswordBox x:Name="txtPSW"  AutomationProperties.Name="txtPSW" Margin="0,0,-223,0" VerticalAlignment="Stretch"/>
+                    </StackPanel>
+                    <Button x:Name="btnLogin" Content="登录" HorizontalAlignment="Stretch" Background="Transparent" Click="BtnLogin_Click"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <SymbolIcon Symbol="57689"/>
+                        <TextBlock Text="添加设备"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock Text="WiFi设备:" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cmbIp" HorizontalAlignment="Left" VerticalAlignment="Center" Width="153"/>
+                        <Button x:Name="btnRefresh" HorizontalAlignment="Stretch" Background="Transparent" Click="BtnRefresh_Click">
+                            <SymbolIcon Symbol="57673"/>
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="btnAdd" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnAdd_Click">
+                        <SymbolIcon Symbol="57609"/>
+                    </Button>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock Text="ZigBee设备:" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ConnectDevices" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding Source={StaticResource DeviceListSource}}" Width="178" Height="30" Background="LightGray">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                    <Button x:Name="btnAddZigBee" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnAddZigBee_Click">
+                        <SymbolIcon Symbol="57609"/>
+                    </Button>
+                    <Button x:Name="btnCloseZigBee" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnCloseZigBee_Click">
+                        <SymbolIcon Symbol="57606"/>
+                    </Button>
+                </StackPanel>
+            </SplitView.Pane>
+        </SplitView>
+
+        <ProgressRing x:Name="ProgressOnLine" IsActive="False" Grid.Row="3" HorizontalAlignment="Center" Height="40" Width="40" Margin="0,0,0,0" VerticalAlignment="Center"/>
     </Grid>
 </Page>

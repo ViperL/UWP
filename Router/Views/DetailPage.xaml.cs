@@ -15,7 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 
 using Router.Model;
-using Router.ViewModel;
+using Router.Controller;
+using Windows.UI.Xaml.Media.Imaging;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -33,22 +34,23 @@ namespace Router
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter.GetType().Equals(typeof(InfoMdoel)))
+            if (e.Parameter.GetType().Equals(typeof(ViewDevModel)))
             {
-                InfoMdoel ObjSen = (InfoMdoel)e.Parameter;
+                ViewDevModel ObjSen = (ViewDevModel)e.Parameter;
                 txtTitle.Text = ObjSen.Type;
-                txtStatue.Text = ObjSen.Statue;
+                txtStatue.Text = ObjSen.IPAddress + ":" + ObjSen.NetPort;
             }
         }
 
         private void BtnDel_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            //Frame.Navigate(typeof(MainPage));
+            Frame.GoBack();
         }
     }
 }

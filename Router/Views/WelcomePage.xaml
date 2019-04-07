@@ -1,12 +1,12 @@
 ﻿<Page
-    x:Class="Router.DetailPage"
+    x:Class="Router.WelcomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Router"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="White">
+    Background="Black">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,9 +22,10 @@
             <RowDefinition Height="63*"/>
             <RowDefinition Height="63*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtTitle" Text="设备名称：" Foreground="Black" Grid.ColumnSpan="2" FontSize="50" HorizontalAlignment="Center"/>
-        <TextBlock x:Name="txtStatue" Text="设备状态:" Foreground="Black" Grid.Row="1"  Grid.ColumnSpan="2" FontSize="25" HorizontalAlignment="Center"/>
-        <Image  Source="/Source/PC&amp;Phone.png" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100"/>
-        <Button x:Name="btnCancel" Content="返回" Foreground="Black"  Background="White" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" Click="BtnCancel_Click"/>
+        <!--布局设置-->
+        <TextBlock Text="正在初始化" Foreground="White" FontSize="40" Grid.ColumnSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Image Grid.Column="2" Grid.Row="1" Source="/Source/MSIco.png"/>
+        <TextBlock Text="基于Windows10 IoT" Foreground="White" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Center" FontSize="20"/>
+        <ProgressRing Grid.Column="2" Grid.Row="2" Height="40" Width="40" IsActive="True" />
     </Grid>
 </Page>

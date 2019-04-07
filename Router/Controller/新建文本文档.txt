@@ -1,0 +1,10 @@
+SettingModel ObjPara = new SettingModel();
+            if (SettingMethod.IsFirstUse() == true)
+                SettingMethod.CreateSetFile();//如果设置文件丢失则创建设置文件
+            try
+            {
+                ObjPara = SettingMethod.GetParameter();
+                txtAzure.Text = ObjPara.AzureID;
+                txtPsw.Password = ObjPara.AzurePSW;
+            }
+            catch (Exception) { }
