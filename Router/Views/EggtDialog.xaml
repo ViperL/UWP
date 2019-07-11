@@ -1,0 +1,19 @@
+﻿<ContentDialog
+    x:Class="Router.EggtDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Router"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="你发现了不该发现的东西"
+    PrimaryButtonText="继续观看"
+    SecondaryButtonText="返回主页"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    FullSizeDesired="True">
+
+    <Grid>
+        <Image Source="/Source/77669c0dly1g102ibxj8kj20u00h741i.jpg"/>
+    </Grid>
+</ContentDialog>

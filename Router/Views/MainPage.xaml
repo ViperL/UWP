@@ -29,7 +29,8 @@
         </Grid.RowDefinitions>
         <!--布局设置-->
 
-        <TextBlock Text="Router V0.1" FontSize="50" Grid.ColumnSpan="2" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="WinRouter" FontSize="50" Grid.ColumnSpan="2" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="V2.0" FontSize="20" Grid.Column="1"  Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
             <TextBlock x:Name="txtLocIp" Text="本机地址:" FontSize="20" Grid.Row="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" />
             <TextBlock Text="请求端口:9000" FontSize="20" Grid.Row="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -38,8 +39,12 @@
         <Button x:Name="btnSet" Foreground="Black" Background="White" Grid.Column="2" HorizontalAlignment="Center" Click="BtnSet_Click">
             <SymbolIcon Symbol="57621"/>
         </Button>
-        <Button x:Name="btnAbout" Content="了解更多" Foreground="Black" Background="White" Grid.Column="3" HorizontalAlignment="Center" Click="BtnAbout_Click"></Button>
-        <Button x:Name="btnSendData" Content="模拟数据发送" Foreground="Black" Background="White" Grid.Column="4" HorizontalAlignment="Center" Click="BtnSendData_Click"></Button>
+        <Button x:Name="btnAbout" Foreground="Black" Background="White" Grid.Column="3" HorizontalAlignment="Center" Click="BtnAbout_Click">
+            <SymbolIcon Symbol="57672"/>
+        </Button>
+        <Image Source="/Source/SchoolLogo.jpg" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" DoubleTapped="Image_DoubleTapped"/>
+        <TextBlock x:Name="txtStatue" FontSize="20" Grid.Row="2" Grid.ColumnSpan="2" Text="正在与服务器通讯..." VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"/>
+        <ProgressRing x:Name="ProgressOnLine" IsActive="False" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="40" Width="40" Margin="0,0,0,0" VerticalAlignment="Center"/>
         <GridView x:Name="gridView" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Grid.RowSpan="3" RightTapped="GridView_RightTapped" SelectionChanged="GridView_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate>
@@ -61,28 +66,49 @@
 
         <SplitView x:Name="SplitPage" IsPaneOpen="False" Grid.RowSpan="4" Grid.ColumnSpan="2" Background="Transparent">
             <SplitView.Pane>
-                <StackPanel Margin="0,0,64,0" HorizontalAlignment="Stretch">
-                    <SymbolIcon Symbol="57621" VerticalAlignment="Center"/>
+                <StackPanel  HorizontalAlignment="Stretch">
+                    <SymbolIcon Symbol="57615" VerticalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <SymbolIcon Symbol="57640"/>
-                        <TextBlock Text="    Azure设置"/>
+                        <SymbolIcon Symbol="59792"/>
+                        <TextBlock Text="   连接设置"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="25">
+                        <TextBlock Width="100" Text=" 当前网络:" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE701;" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="lblNetWorkName" Text=" Non" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="帐号:" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                        <TextBox x:Name="txtAzure" Text="" Margin="0,0,-223,0"/>
+                        <TextBlock Text=" 帐号:" Width="50" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <TextBox x:Name="txtAzure" Text="" Width="260"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
-                        <TextBlock Text="密码:" VerticalAlignment="Center"/>
-                        <PasswordBox x:Name="txtPSW"  AutomationProperties.Name="txtPSW" Margin="0,0,-223,0" VerticalAlignment="Stretch"/>
+                        <TextBlock Text=" 密码:" Width="50" VerticalAlignment="Center"/>
+                        <PasswordBox x:Name="txtPSW"  AutomationProperties.Name="txtPSW" Width="260" VerticalAlignment="Stretch"/>
                     </StackPanel>
-                    <Button x:Name="btnLogin" Content="登录" HorizontalAlignment="Stretch" Background="Transparent" Click="BtnLogin_Click"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                        <TextBlock Text=" 发送间隔:" Width="70" VerticalAlignment="Center"/>
+                        <Slider x:Name="SilderTimeSpan" Width="200" Minimum="100" Maximum="5000" StepFrequency="10" SmallChange="100" LargeChange="500" Value="1000" ValueChanged="Slider_ValueChanged" />
+                        <TextBlock x:Name="lblTimeSpan" Text="ms" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal"  VerticalAlignment="Stretch" Width="256">
+                        <TextBlock Text="  RSA加密:" VerticalAlignment="Center" Width="100"/>
+                        <ToggleSwitch x:Name="btnRSASwitch" OnContent="RSA加密开启" OffContent="RSA加密关闭"/>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Stretch" Width="256" >
+                        <TextBlock Text="  IoT服务器：" VerticalAlignment="Center" Width="100"/>
+                        <ToggleSwitch x:Name="btnAZureSwitch" OnContent="AZure服务" OffContent="本地服务" />
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Stretch" Width="256" >
+                        <TextBlock Text="  连接状态：" VerticalAlignment="Center" Width="100"/>
+                        <ToggleSwitch x:Name="btnServceSwitch" OnContent="已连接" OffContent="已断开" Toggled="BtnServceSwitch_Toggled"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <SymbolIcon Symbol="57689"/>
-                        <TextBlock Text="添加设备"/>
+                        <SymbolIcon Symbol="57825"/>
+                        <TextBlock Text="  添加设备"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <TextBlock Text="WiFi设备:" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="cmbIp" HorizontalAlignment="Left" VerticalAlignment="Center" Width="153"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                        <TextBlock Text=" WiFi设备:" Width="80" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cmbIp" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200"/>
                         <Button x:Name="btnRefresh" HorizontalAlignment="Stretch" Background="Transparent" Click="BtnRefresh_Click">
                             <SymbolIcon Symbol="57673"/>
                         </Button>
@@ -91,25 +117,34 @@
                         <SymbolIcon Symbol="57609"/>
                     </Button>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <TextBlock Text="ZigBee设备:" VerticalAlignment="Center"/>
-                        <ListBox x:Name="ConnectDevices" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding Source={StaticResource DeviceListSource}}" Width="178" Height="30" Background="LightGray">
+                        <TextBlock Text=" ZigBee设备:" Width="80" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ConnectDevices" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding Source={StaticResource DeviceListSource}}" Width="200" Height="30" Background="LightGray" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                        <Button x:Name="btnZigRefreash" HorizontalAlignment="Stretch" Background="Transparent" Click="BtnZigRefreash_Click" >
+                            <SymbolIcon Symbol="57673"/>
+                        </Button>
                     </StackPanel>
                     <Button x:Name="btnAddZigBee" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnAddZigBee_Click">
                         <SymbolIcon Symbol="57609"/>
                     </Button>
-                    <Button x:Name="btnCloseZigBee" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnCloseZigBee_Click">
-                        <SymbolIcon Symbol="57606"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="40">
+                        <TextBlock  Text=" 小娜:" Width="80" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <TextBlock x:Name="lblContana" Text=" " Width="200" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <Button x:Name="Test"  Background="Transparent"  Click="Test_Click" Height="40">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE720;"/>
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="btnExit" Background="Transparent" HorizontalAlignment="Stretch" Click="BtnExit_Click">
+                        <SymbolIcon Symbol="57724"/>
                     </Button>
                 </StackPanel>
             </SplitView.Pane>
         </SplitView>
-
-        <ProgressRing x:Name="ProgressOnLine" IsActive="False" Grid.Row="3" HorizontalAlignment="Center" Height="40" Width="40" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <MediaElement x:Name="mediaElement"></MediaElement>
     </Grid>
 </Page>

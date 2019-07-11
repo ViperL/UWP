@@ -18,10 +18,10 @@ namespace Router
                 case "温度": ImageUrl = "/Source/Temp.png"; break;
                 case "湿度": ImageUrl = "/Source/humidity.png"; break;
                 case "Lumia 930": ImageUrl = "/Source/phone.png"; break;
+                case "AirConditioner": ImageUrl = "/Source/airconditioner.png"; break;
+                case "照明系统": ImageUrl = "/Source/Lightpng.png"; break;
                 default:ImageUrl = null;break;
             }
-            if (item.Type == "温度")
-                ImageUrl = "/Source/Temp.png";
             ViewDevModel Obj = new ViewDevModel()
             {
                 NetPort = item.NetPort,

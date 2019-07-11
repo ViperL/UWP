@@ -29,18 +29,17 @@ namespace Router.Controller
 
         public async void AddQuene(string Info)
         {
-            StorageFile file = await folder.GetFileAsync(file_name);
-            if (file != null)
+            try
             {
-                try
+                StorageFile file = await folder.GetFileAsync(file_name);
+                if (file != null)
                 {
                     string Str = await Windows.Storage.FileIO.ReadTextAsync(file);
-                    await Windows.Storage.FileIO.WriteTextAsync(file, Str + Info+"\n");
-                }
-                catch (Exception)
-                {
+                    await Windows.Storage.FileIO.WriteTextAsync(file, Str + Info + "\n");
                 }
             }
+            catch (Exception)
+            { }
         }
 
         public async void AddDevices(List<DeviceModel> Obj)
@@ -91,6 +90,23 @@ namespace Router.Controller
                 Quene = Str.Split(Environment.NewLine.ToCharArray());
                 return Quene;
                 //await Windows.Storage.FileIO.WriteTextAsync(file, "");//清空数据栈
+            }
+            catch (Exception)
+            {
+                return Quene;
+            }
+        }
+
+        public async Task<string[]> PoPToCloud()
+        {
+            string[] Quene = null;
+            try
+            {
+                StorageFile file = await folder.GetFileAsync(file_name);
+                string Str = await Windows.Storage.FileIO.ReadTextAsync(file);
+                Quene = Str.Split(Environment.NewLine.ToCharArray());
+                await Windows.Storage.FileIO.WriteTextAsync(file, "");//清空数据栈
+                return Quene;
             }
             catch (Exception)
             {
