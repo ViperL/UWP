@@ -21,7 +21,7 @@ class AzureIoTHub
     // Note: this connection string is specific to the device "TestRouterDevice". To configure other devices,
     // see information on iothub-explorer at http://aka.ms/iothubgetstartedVSCS
     //
-    const string deviceConnectionString = "HostName=DataConsole.azure-devices.net;DeviceId=TestRouterDevice;SharedAccessKey=QqOIVlAMRWFHGvypMn2XqsYIfGF7rzQj6h1km3pH/HM=";
+    const string deviceConnectionString = "{}";
 
 
     //
